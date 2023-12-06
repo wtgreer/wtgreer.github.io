@@ -1,0 +1,492 @@
+[
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This blog is for CS5805: Machine Learning I at Virginia Tech."
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Post With Code",
+    "section": "",
+    "text": "This is a post with executable code."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this blog"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "blogs",
+    "section": "",
+    "text": "Classification: Classifying Satellite Images\n\n\n\n\n\n\n\nclassificaiton\n\n\ncode\n\n\nmachine learning\n\n\n\n\n\n\n\n\n\n\n\nNov 15, 2023\n\n\nTrent Greer\n\n\n\n\n\n\n  \n\n\n\n\nClustering Penguin Features by Sex\n\n\n\n\n\n\n\nclustering\n\n\ncode\n\n\nmachine learning\n\n\n\n\n\n\n\n\n\n\n\nNov 15, 2023\n\n\nTrent Greer\n\n\n\n\n\n\n  \n\n\n\n\nLinear and Non-Linear Regression\n\n\n\n\n\n\n\nlinear regression\n\n\nnon-linear regression\n\n\ncode\n\n\nmachine learning\n\n\n\n\n\n\n\n\n\n\n\nNov 15, 2023\n\n\nTrent Greer\n\n\n\n\n\n\n  \n\n\n\n\nOutlier Detection: Finding Outlier Wines\n\n\n\n\n\n\n\noutlier detection\n\n\nanomoly detection\n\n\ncode\n\n\nmachine learning\n\n\n\n\n\n\n\n\n\n\n\nNov 15, 2023\n\n\nTrent Greer\n\n\n\n\n\n\n  \n\n\n\n\nProbability and Random Variables: Simulating Dice Rolls\n\n\n\n\n\n\n\nprobability\n\n\ncode\n\n\nrandom variables\n\n\nsimulation\n\n\n\n\n\n\n\n\n\n\n\nNov 15, 2023\n\n\nTrent Greer\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nNov 15, 2023\n\n\nTrent Greer\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/classification/index.html",
+    "href": "posts/classification/index.html",
+    "title": "Classification: Classifying Satellite Images",
+    "section": "",
+    "text": "Satellite"
+  },
+  {
+    "objectID": "posts/classification/index.html#introduction",
+    "href": "posts/classification/index.html#introduction",
+    "title": "Classification: Classifying Satellite Images",
+    "section": "Introduction",
+    "text": "Introduction\nSatellite imagery has a wide variety of uses, including agriculture, cartography, conservation, and climate studies. For example, in terms of agriculture, classifying satellite imagery is potentially useful for detecting plant diseases, soil conditions, and crop health.\nIn this blog, we will look at how to build a machine learning model for classifying satellite imagery."
+  },
+  {
+    "objectID": "posts/classification/index.html#step-1-dataset-preparation",
+    "href": "posts/classification/index.html#step-1-dataset-preparation",
+    "title": "Classifying Satellite Images",
+    "section": "Step 1: Dataset Preparation",
+    "text": "Step 1: Dataset Preparation\nThe dataset used in this blog is sourced from the “Satellite Image Classification” dataset(https://www.kaggle.com/datasets/mahmoudreda55/satellite-image-classification/data). The dataset structure should include subfolders for each class, containing images corresponding to that class. In our case, the classes are cloudy, desert, green area, and water."
+  },
+  {
+    "objectID": "posts/classification/index.html#step-2-loading-and-preprocessing-the-data",
+    "href": "posts/classification/index.html#step-2-loading-and-preprocessing-the-data",
+    "title": "Classifying Satellite Images",
+    "section": "Step 2: Loading and Preprocessing the Data",
+    "text": "Step 2: Loading and Preprocessing the Data\nWe use the image_dataset_from_directory function provided by TensorFlow to load and preprocess the dataset. This function automatically labels the images based on the subfolder structure and splits the data into training and validation sets.\nHere is the code for splitting for loading and splitting our datasets:\ndata_dir = \"./data\" \nbatch_size = 32\nimage_size = (64, 64)\n\ntrain_dataset = image_dataset_from_directory(\n    data_dir,\n    validation_split=0.2,\n    subset=\"training\",\n    seed=778,\n    image_size=image_size,\n    batch_size=batch_size,\n)\n\nvalidation_dataset = image_dataset_from_directory(\n    data_dir,\n    validation_split=0.2,\n    subset=\"validation\",\n    seed=778,\n    image_size=image_size,\n    batch_size=batch_size,\n)\n\nclass_names = train_dataset.class_names"
+  },
+  {
+    "objectID": "posts/classification/index.html#step-3-exploring-the-data",
+    "href": "posts/classification/index.html#step-3-exploring-the-data",
+    "title": "Classifying Satellite Images",
+    "section": "Step 3: Exploring the Data",
+    "text": "Step 3: Exploring the Data\nVisualizing the dataset provides valuable insights. In the code, we display a grid of sample images with their corresponding labels, allowing us to verify that the data is loaded correctly and gives us an idea of what our model will be working with.\nWe can do this with the following code:\nplt.figure(figsize=(10, 10))\nfor images, labels in train_dataset.take(1):\n    for i in range(9):\n        ax = plt.subplot(3, 3, i + 1)\n        plt.imshow(images[i].numpy().astype(\"uint8\"))\n        plt.title(class_names[labels[i]])\n        plt.axis(\"off\")\nplt.show()\nThis gives us the following image:\n\n\n\nSatellite Image"
+  },
+  {
+    "objectID": "posts/classification/index.html#step-4-building-the-convolutional-neural-network",
+    "href": "posts/classification/index.html#step-4-building-the-convolutional-neural-network",
+    "title": "Classifying Satellite Images",
+    "section": "Step 4: Building the Convolutional Neural Network",
+    "text": "Step 4: Building the Convolutional Neural Network\nThe heart of the classification task lies in the CNN architecture. The provided code outlines a CNN model with multiple convolutional layers followed by max-pooling layers. Additionally, we’ve introduced more complexity with additional convolutional and dense layers, enhancing the model’s ability to learn intricate patterns in satellite images.\nmodel = keras.Sequential([\n    layers.InputLayer(input_shape=(image_size[0], image_size[1], 3)),\n    \n    # Convolutional layers\n    layers.Conv2D(32, kernel_size=(3, 3), activation=\"relu\"),\n    layers.MaxPooling2D(pool_size=(2, 2)),\n    layers.Conv2D(64, kernel_size=(3, 3), activation=\"relu\"),\n    layers.MaxPooling2D(pool_size=(2, 2)),\n    layers.Conv2D(128, kernel_size=(3, 3), activation=\"relu\"),\n    layers.MaxPooling2D(pool_size=(2, 2)),\n    \n    # Flatten before dense layers\n    layers.Flatten(),\n    \n    # Dense layers\n    layers.Dense(256, activation=\"relu\"),\n    layers.Dropout(0.5), \n    layers.Dense(128, activation=\"relu\"),\n    \n    # Output layer\n    layers.Dense(len(class_names), activation=\"softmax\"),\n])"
+  },
+  {
+    "objectID": "posts/classification/index.html#step-5-compiling-the-model",
+    "href": "posts/classification/index.html#step-5-compiling-the-model",
+    "title": "Classifying Satellite Images",
+    "section": "Step 5: Compiling the Model",
+    "text": "Step 5: Compiling the Model\nBefore training, we compile the model by specifying the optimizer, loss function, and evaluation metric. In our example, we use the Adam optimizer and sparse categorical crossentropy loss, appropriate for multi-class classification tasks.\nmodel.compile(\n    optimizer=\"adam\",\n    loss=\"sparse_categorical_crossentropy\",\n    metrics=[\"accuracy\"]\n)"
+  },
+  {
+    "objectID": "posts/classification/index.html#step-6-training-the-model",
+    "href": "posts/classification/index.html#step-6-training-the-model",
+    "title": "Classifying Satellite Images",
+    "section": "Step 6: Training the Model",
+    "text": "Step 6: Training the Model\nThe model is trained using the fit function, iterating through the dataset for a specified number of epochs. We observe the training and validation accuracy and loss over epochs, monitoring the model’s learning progress.\nepochs = 10\nhistory = model.fit(\n    train_dataset,\n    validation_data=validation_dataset,\n    epochs=epochs\n)"
+  },
+  {
+    "objectID": "posts/classification/index.html#step-7-evaluating-the-model",
+    "href": "posts/classification/index.html#step-7-evaluating-the-model",
+    "title": "Classifying Satellite Images",
+    "section": "Step 7: Evaluating the Model",
+    "text": "Step 7: Evaluating the Model\nAfter training, we evaluate the model on the validation dataset to assess its performance. The provided code calculates and prints the accuracy achieved by the model on unseen data.\ntest_loss, test_acc = model.evaluate(validation_dataset, verbose=2)"
+  },
+  {
+    "objectID": "posts/classification/index.html#conclusion",
+    "href": "posts/classification/index.html#conclusion",
+    "title": "Classification: Classifying Satellite Images",
+    "section": "Conclusion",
+    "text": "Conclusion\nBuilding a satellite image classifier involves careful data preparation, model architecture design, and training. The provided code serves as a starting point, but it might be necessary to experiment with different architectures, hyperparameters, and augmentations to improve the model’s accuracy. Satellite image classification has applications in a multitude of enviroments, making it an extremely powerful."
+  },
+  {
+    "objectID": "posts/classification/index.html#dataset-preparation",
+    "href": "posts/classification/index.html#dataset-preparation",
+    "title": "Classification: Classifying Satellite Images",
+    "section": "Dataset Preparation",
+    "text": "Dataset Preparation\nThe dataset used in this blog is sourced from the “Satellite Image Classification” dataset(https://www.kaggle.com/datasets/mahmoudreda55/satellite-image-classification/data). The dataset structure should include subfolders for each class, containing images corresponding to that class. In our case, the classes are cloudy, desert, green area, and water."
+  },
+  {
+    "objectID": "posts/classification/index.html#loading-and-preprocessing-the-data",
+    "href": "posts/classification/index.html#loading-and-preprocessing-the-data",
+    "title": "Classification: Classifying Satellite Images",
+    "section": "Loading and Preprocessing the Data",
+    "text": "Loading and Preprocessing the Data\nWe use the image_dataset_from_directory function provided by TensorFlow to load and preprocess the dataset. This function automatically labels the images based on the subfolder structure and splits the data into training and validation sets.\nHere is the code for splitting for loading and splitting our datasets:\ndata_dir = \"./data\" \nbatch_size = 32\nimage_size = (64, 64)\n\ntrain_dataset = image_dataset_from_directory(\n    data_dir,\n    validation_split=0.2,\n    subset=\"training\",\n    seed=778,\n    image_size=image_size,\n    batch_size=batch_size,\n)\n\nvalidation_dataset = image_dataset_from_directory(\n    data_dir,\n    validation_split=0.2,\n    subset=\"validation\",\n    seed=778,\n    image_size=image_size,\n    batch_size=batch_size,\n)\n\nclass_names = train_dataset.class_names"
+  },
+  {
+    "objectID": "posts/classification/index.html#exploring-the-data",
+    "href": "posts/classification/index.html#exploring-the-data",
+    "title": "Classification: Classifying Satellite Images",
+    "section": "Exploring the Data",
+    "text": "Exploring the Data\nVisualizing the dataset provides valuable insights. In the code, we display a grid of sample images with their corresponding labels, allowing us to verify that the data is loaded correctly and gives us an idea of what our model will be working with.\nWe can do this with the following code:\nplt.figure(figsize=(10, 10))\nfor images, labels in train_dataset.take(1):\n    for i in range(9):\n        ax = plt.subplot(3, 3, i + 1)\n        plt.imshow(images[i].numpy().astype(\"uint8\"))\n        plt.title(class_names[labels[i]])\n        plt.axis(\"off\")\nplt.show()\nThis gives us the following image:\n\n\n\nSatellite Image"
+  },
+  {
+    "objectID": "posts/classification/index.html#building-the-convolutional-neural-network",
+    "href": "posts/classification/index.html#building-the-convolutional-neural-network",
+    "title": "Classification: Classifying Satellite Images",
+    "section": "Building the Convolutional Neural Network",
+    "text": "Building the Convolutional Neural Network\nThe heart of the classification task lies in the CNN architecture. The provided code outlines a CNN model with multiple convolutional layers followed by max-pooling layers. Additionally, we’ve introduced more complexity with additional convolutional and dense layers, enhancing the model’s ability to learn intricate patterns in satellite images.\nmodel = keras.Sequential([\n    layers.InputLayer(input_shape=(image_size[0], image_size[1], 3)),\n    \n    # Convolutional layers\n    layers.Conv2D(32, kernel_size=(3, 3), activation=\"relu\"),\n    layers.MaxPooling2D(pool_size=(2, 2)),\n    layers.Conv2D(64, kernel_size=(3, 3), activation=\"relu\"),\n    layers.MaxPooling2D(pool_size=(2, 2)),\n    layers.Conv2D(128, kernel_size=(3, 3), activation=\"relu\"),\n    layers.MaxPooling2D(pool_size=(2, 2)),\n    \n    # Flatten before dense layers\n    layers.Flatten(),\n    \n    # Dense layers\n    layers.Dense(256, activation=\"relu\"),\n    layers.Dropout(0.5), \n    layers.Dense(128, activation=\"relu\"),\n    \n    # Output layer\n    layers.Dense(len(class_names), activation=\"softmax\"),\n])"
+  },
+  {
+    "objectID": "posts/classification/index.html#compiling-the-model",
+    "href": "posts/classification/index.html#compiling-the-model",
+    "title": "Classification: Classifying Satellite Images",
+    "section": "Compiling the Model",
+    "text": "Compiling the Model\nBefore training, we compile the model by specifying the optimizer, loss function, and evaluation metric. In our example, we use the Adam optimizer and sparse categorical crossentropy loss, appropriate for multi-class classification tasks.\nmodel.compile(\n    optimizer=\"adam\",\n    loss=\"sparse_categorical_crossentropy\",\n    metrics=[\"accuracy\"]\n)"
+  },
+  {
+    "objectID": "posts/classification/index.html#training-the-model",
+    "href": "posts/classification/index.html#training-the-model",
+    "title": "Classification: Classifying Satellite Images",
+    "section": "Training the Model",
+    "text": "Training the Model\nThe model is trained using the fit function, iterating through the dataset for a specified number of epochs. We observe the training and validation accuracy and loss over epochs, monitoring the model’s learning progress.\nepochs = 10\nhistory = model.fit(\n    train_dataset,\n    validation_data=validation_dataset,\n    epochs=epochs\n)"
+  },
+  {
+    "objectID": "posts/classification/index.html#evaluating-the-model",
+    "href": "posts/classification/index.html#evaluating-the-model",
+    "title": "Classification: Classifying Satellite Images",
+    "section": "Evaluating the Model",
+    "text": "Evaluating the Model\nAfter training, we evaluate the model on the validation dataset to assess its performance. The provided code calculates and prints the accuracy achieved by the model on unseen data.\ntest_loss, test_acc = model.evaluate(validation_dataset, verbose=2)\nThis gives us a final test accuracy of 93.25%, which is great for a machine learning model under any circumstances and due to the complexity of our CNN and the quality/amount of our data."
+  },
+  {
+    "objectID": "posts/classification/index.html#training-and-performance-visualization",
+    "href": "posts/classification/index.html#training-and-performance-visualization",
+    "title": "Classification: Classifying Satellite Images",
+    "section": "Training and Performance Visualization",
+    "text": "Training and Performance Visualization\nHere is some code to visualize how our model improved over each consecutive epoch.\n# Plot training history\nplt.figure(figsize=(10, 4))\n\n# Plot training & validation accuracy values\nplt.subplot(1, 2, 1)\nplt.plot(history.history['accuracy'])\nplt.plot(history.history['val_accuracy'])\nplt.title('Model accuracy')\nplt.xlabel('Epoch')\nplt.ylabel('Accuracy')\nplt.legend(['Train', 'Validation'], loc='upper left')\n\n# Plot training & validation loss values\nplt.subplot(1, 2, 2)\nplt.plot(history.history['loss'])\nplt.plot(history.history['val_loss'])\nplt.title('Model loss')\nplt.xlabel('Epoch')\nplt.ylabel('Loss')\nplt.legend(['Train', 'Validation'], loc='upper left')\n\nplt.tight_layout()\nplt.show()\nThis produces the graph below showing the accuracy and loss of our model on both the training and validation datasets.\n\n\n\nGraph"
+  },
+  {
+    "objectID": "posts/probability/index.html",
+    "href": "posts/probability/index.html",
+    "title": "Probability and Random Variables: Simulating Dice Rolls",
+    "section": "",
+    "text": "Dice Rolling"
+  },
+  {
+    "objectID": "posts/probability/index.html#rolling-the-dice-a-stochastic-experiment",
+    "href": "posts/probability/index.html#rolling-the-dice-a-stochastic-experiment",
+    "title": "Probability and Random Variables: Simulating Dice Rolls",
+    "section": "",
+    "text": "In our simulation, each roll of the die is a stochastic experiment, and the outcome (the number rolled) is a random variable. The probability distribution of the die is discrete, with each number from 1 to 6 having an equal probability of 1/6. Observing Convergence to Expected Probabilities\nAs we increase the number of rolls, we expect the empirical probability distribution to converge to the theoretical probability distribution. In other words, the more rolls we perform, the closer the observed frequencies should be to the expected probabilities of 1/6 for each number."
+  },
+  {
+    "objectID": "posts/probability/index.html#visualizing-the-evolution",
+    "href": "posts/probability/index.html#visualizing-the-evolution",
+    "title": "Probability and Random Variables: Simulating Dice Rolls",
+    "section": "Visualizing the Evolution",
+    "text": "Visualizing the Evolution\nThe code below generates histograms for different numbers of rolls, allowing us to chart how a larger number of rolls creates a more equal distribution. With a small number of rolls, we expect to observe significant variability, but as the number of rolls increases, the histogram becomes smoother and approaches the expected theoretical distribution.\nimport numpy as np\nimport matplotlib.pyplot as plt\n\ndef simulate_rolls(num_rolls):\n    #pick a random number from 1-6\n    rolls = np.random.randint(1, 7, size=num_rolls)\n    return rolls\n\ndef plot_distribution(rolls, num_rolls):\n    plt.figure(figsize=(8, 5))\n    plt.hist(rolls, bins=np.arange(0.5, 7.5, 1), density=True, edgecolor='black', alpha=0.7)\n    plt.title(f'Distribution after {num_rolls} Rolls')\n    plt.xlabel('Rolled Number')\n    plt.ylabel('Probability')\n    plt.xticks(range(1, 7))\n    plt.grid(axis='y', linestyle='--', alpha=0.7)\n    plt.show()\n\nrolls = [10, 20, 50, 100, 1000, 10000, 100000, 1000000, 10000000]\n\nfor num_rolls in rolls:\n    rolls = simulate_rolls(num_rolls)\n    plot_distribution(rolls, num_rolls)"
+  },
+  {
+    "objectID": "posts/probability/index.html#conclusion",
+    "href": "posts/probability/index.html#conclusion",
+    "title": "Probability and Random Variables: Simulating Dice Rolls",
+    "section": "Conclusion",
+    "text": "Conclusion\nSimulating dice rolls and observing the resulting probability distributions offer a hands-on way to grasp fundamental concepts in probability theory and random variables. This example demonstrates the convergence of empirical distributions to theoretical distributions as we increase the sample size, reinforcing the principles that underlie many statistical analyses.\nUnderstanding probability distributions is crucial not only for simulating simple games of chance but also for tackling complex problems in fields such as finance, physics, and machine learning. Whether rolling dice or analyzing real-world data, the concepts explored here form the foundation for navigating uncertainties and making informed decisions."
+  },
+  {
+    "objectID": "posts/probability/index.html#introduction",
+    "href": "posts/probability/index.html#introduction",
+    "title": "Probability and Random Variables: Simulating Dice Rolls",
+    "section": "Introduction",
+    "text": "Introduction\nIn our simulation, each roll of the die (the number rolled) is a random variable. The probability distribution of the die is discrete, with each number from 1 to 6 having an equal probability of 1/6.\nIf they all have equal probability, and the outcome is truly random (this is not true for a machine, but it is true for a real die), as we increase the number of rolls, we expect the empirical probability distribution to converge to the theoretical probability distribution. In other words, the more rolls we perform, the closer the observed frequencies should be to the expected probabilities of 1/6 for each number."
+  },
+  {
+    "objectID": "posts/probability/index.html#the-code",
+    "href": "posts/probability/index.html#the-code",
+    "title": "Probability and Random Variables: Simulating Dice Rolls",
+    "section": "The Code",
+    "text": "The Code\nThe code below generates histograms for different numbers of rolls, allowing us to chart how a larger number of rolls creates a more equal distribution. With a small number of rolls, we expect to observe significant variability, but as the number of rolls increases, the histogram becomes smoother and approaches the expected theoretical distribution.\nimport numpy as np\nimport matplotlib.pyplot as plt\n\ndef simulate_rolls(num_rolls):\n    #pick a random number from 1-6\n    rolls = np.random.randint(1, 7, size=num_rolls)\n    return rolls\n\ndef plot_distribution(rolls, num_rolls):\n    plt.figure(figsize=(8, 5))\n    plt.hist(rolls, bins=np.arange(0.5, 7.5, 1), density=True, edgecolor='black', alpha=0.7)\n    plt.title(f'Distribution after {num_rolls} Rolls')\n    plt.xlabel('Rolled Number')\n    plt.ylabel('Probability')\n    plt.xticks(range(1, 7))\n    plt.grid(axis='y', linestyle='--', alpha=0.7)\n    plt.show()\n\nrolls = [10, 100, 1000, 10000, 100000, 1000000, 10000000]\n\nfor num_rolls in rolls:\n    rolls = simulate_rolls(num_rolls)\n    plot_distribution(rolls, num_rolls)"
+  },
+  {
+    "objectID": "posts/probability/index.html#rolls",
+    "href": "posts/probability/index.html#rolls",
+    "title": "Probability and Random Variables: Simulating Dice Rolls",
+    "section": "10 Rolls",
+    "text": "10 Rolls\n\n\n\n10 Rolls Distribution\n\n\nAs expected, our distribution is very uneven after 10 rolls, with the data skewed towards rolling 1, 5, and 6. However, we could expect this data to be skewed towards any other number or combination of numbers as well. There is a 20% difference between the most rolled number and the least rolled number."
+  },
+  {
+    "objectID": "posts/outlier/index.html",
+    "href": "posts/outlier/index.html",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "",
+    "text": "Wine"
+  },
+  {
+    "objectID": "posts/outlier/index.html#introduction",
+    "href": "posts/outlier/index.html#introduction",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Introduction",
+    "text": "Introduction\nWhat makes a great wine? What makes a bad wine? How do we measure wine quality? Is there a consistent formula? In this blog post, we dive into the world of wine, exploring how machine learning and outlier detection can shed light on the quality of red and white wines. In this blog we would like to see if we can determine what an outlier in our dataset looks like."
+  },
+  {
+    "objectID": "posts/outlier/index.html#dataset-preparation",
+    "href": "posts/outlier/index.html#dataset-preparation",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Dataset Preparation",
+    "text": "Dataset Preparation\nThe dataset used is titled “Wine Quality” and features various attributes of red/white wine including:\n” Input variables (based on physicochemical tests): 1 - fixed acidity 2 - volatile acidity 3 - citric acid 4 - residual sugar 5 - chlorides 6 - free sulfur dioxide 7 - total sulfur dioxide 8 - density 9 - pH 10 - sulphates 11 - alcohol Output variable (based on sensory data): 12 - quality (score between 0 and 10) ”\nHere is the reference for the dataset used:\nP. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis. Modeling wine preferences by data mining from physicochemical properties. In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236."
+  },
+  {
+    "objectID": "posts/outlier/index.html#loading-and-preprocessing-the-data",
+    "href": "posts/outlier/index.html#loading-and-preprocessing-the-data",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Loading and Preprocessing the Data",
+    "text": "Loading and Preprocessing the Data\nWe use the following code to load and standardize the dataset:\n    wine_data = pd.read_csv(file_path, delimiter=';')\n\n    X = wine_data.iloc[:, :-1]\n\n    scaler = StandardScaler()\n    X_standardized = scaler.fit_transform(X)\nStandardization ensures that each feature has a mean of 0 and a standard deviation of 1, preventing certain features from dominating the outlier detection process."
+  },
+  {
+    "objectID": "posts/outlier/index.html#exploring-the-data",
+    "href": "posts/outlier/index.html#exploring-the-data",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Exploring the Data",
+    "text": "Exploring the Data\nWe use the following code to load and standardize the dataset:\n    wine_data = pd.read_csv(file_path, delimiter=';')\n\n    X = wine_data.iloc[:, :-1]\n\n    scaler = StandardScaler()\n    X_standardized = scaler.fit_transform(X)"
+  },
+  {
+    "objectID": "posts/outlier/index.html#building-the-convolutional-neural-network",
+    "href": "posts/outlier/index.html#building-the-convolutional-neural-network",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Building the Convolutional Neural Network",
+    "text": "Building the Convolutional Neural Network\nThe heart of the classification task lies in the CNN architecture. The provided code outlines a CNN model with multiple convolutional layers followed by max-pooling layers. Additionally, we’ve introduced more complexity with additional convolutional and dense layers, enhancing the model’s ability to learn intricate patterns in satellite images.\nmodel = keras.Sequential([\n    layers.InputLayer(input_shape=(image_size[0], image_size[1], 3)),\n    \n    # Convolutional layers\n    layers.Conv2D(32, kernel_size=(3, 3), activation=\"relu\"),\n    layers.MaxPooling2D(pool_size=(2, 2)),\n    layers.Conv2D(64, kernel_size=(3, 3), activation=\"relu\"),\n    layers.MaxPooling2D(pool_size=(2, 2)),\n    layers.Conv2D(128, kernel_size=(3, 3), activation=\"relu\"),\n    layers.MaxPooling2D(pool_size=(2, 2)),\n    \n    # Flatten before dense layers\n    layers.Flatten(),\n    \n    # Dense layers\n    layers.Dense(256, activation=\"relu\"),\n    layers.Dropout(0.5), \n    layers.Dense(128, activation=\"relu\"),\n    \n    # Output layer\n    layers.Dense(len(class_names), activation=\"softmax\"),\n])"
+  },
+  {
+    "objectID": "posts/outlier/index.html#compiling-the-model",
+    "href": "posts/outlier/index.html#compiling-the-model",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Compiling the Model",
+    "text": "Compiling the Model\nBefore training, we compile the model by specifying the optimizer, loss function, and evaluation metric. In our example, we use the Adam optimizer and sparse categorical crossentropy loss, appropriate for multi-class classification tasks.\nmodel.compile(\n    optimizer=\"adam\",\n    loss=\"sparse_categorical_crossentropy\",\n    metrics=[\"accuracy\"]\n)"
+  },
+  {
+    "objectID": "posts/outlier/index.html#training-the-model",
+    "href": "posts/outlier/index.html#training-the-model",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Training the Model",
+    "text": "Training the Model\nThe model is trained using the fit function, iterating through the dataset for a specified number of epochs. We observe the training and validation accuracy and loss over epochs, monitoring the model’s learning progress.\nepochs = 10\nhistory = model.fit(\n    train_dataset,\n    validation_data=validation_dataset,\n    epochs=epochs\n)"
+  },
+  {
+    "objectID": "posts/outlier/index.html#evaluating-the-model",
+    "href": "posts/outlier/index.html#evaluating-the-model",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Evaluating the Model",
+    "text": "Evaluating the Model\nAfter training, we evaluate the model on the validation dataset to assess its performance. The provided code calculates and prints the accuracy achieved by the model on unseen data.\ntest_loss, test_acc = model.evaluate(validation_dataset, verbose=2)\nThis gives us a final test accuracy of 93.25%, which is great for a machine learning model under any circumstances and due to the complexity of our CNN and the quality/amount of our data."
+  },
+  {
+    "objectID": "posts/outlier/index.html#training-and-performance-visualization",
+    "href": "posts/outlier/index.html#training-and-performance-visualization",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Training and Performance Visualization",
+    "text": "Training and Performance Visualization\nHere is some code to visualize how our model improved over each consecutive epoch.\n# Plot training history\nplt.figure(figsize=(10, 4))\n\n# Plot training & validation accuracy values\nplt.subplot(1, 2, 1)\nplt.plot(history.history['accuracy'])\nplt.plot(history.history['val_accuracy'])\nplt.title('Model accuracy')\nplt.xlabel('Epoch')\nplt.ylabel('Accuracy')\nplt.legend(['Train', 'Validation'], loc='upper left')\n\n# Plot training & validation loss values\nplt.subplot(1, 2, 2)\nplt.plot(history.history['loss'])\nplt.plot(history.history['val_loss'])\nplt.title('Model loss')\nplt.xlabel('Epoch')\nplt.ylabel('Loss')\nplt.legend(['Train', 'Validation'], loc='upper left')\n\nplt.tight_layout()\nplt.show()\nThis produces the graph below showing the accuracy and loss of our model on both the training and validation datasets.\n\n\n\nGraph"
+  },
+  {
+    "objectID": "posts/outlier/index.html#conclusion",
+    "href": "posts/outlier/index.html#conclusion",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Conclusion",
+    "text": "Conclusion"
+  },
+  {
+    "objectID": "posts/outlier/index.html#dataset",
+    "href": "posts/outlier/index.html#dataset",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Dataset",
+    "text": "Dataset\nThe dataset used is titled “Wine Quality” and according to our source, features various attributes of red/white wine including:\nInput variables (based on physicochemical tests):\n1 - fixed acidity\n\n2 - volatile acidity\n\n3 - citric acid\n\n4 - residual sugar\n\n5 - chlorides\n\n6 - free sulfur dioxide\n\n7 - total sulfur dioxide\n\n8 - density\n\n9 - pH\n\n10 - sulphates\n\n11 - alcohol\nOutput variable (based on sensory data):\n12 - quality (score between 0 and 10)\nHere is the reference for the dataset used:\nP. Cortez, A. Cerdeira, F. Almeida, T. Matos and J. Reis. Modeling wine preferences by data mining from physicochemical properties. In Decision Support Systems, Elsevier, 47(4):547-553. ISSN: 0167-9236."
+  },
+  {
+    "objectID": "posts/outlier/index.html#isolation-forest",
+    "href": "posts/outlier/index.html#isolation-forest",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Isolation Forest",
+    "text": "Isolation Forest\nIsolation Forest is a great choice for outlier detection in the wine quality dataset due to its ability to efficiently identify anomalies within high-dimensional data. This algorithm is good at isolating outliers by constructing a random forest of decision trees, each of which partitions the data into subsets. The contamination parameter in Isolation Forest determines the proportion of outliers expected in the dataset. A contamination level of 0.05 is chosen based on the assumption that only a small percentage of wines have extremely great or poor quality. A contamination level of 0.05 then allows for an identification of both great and terrible wines.\nmodel = IsolationForest(contamination=0.05)\nmodel.fit(X_standardized)"
+  },
+  {
+    "objectID": "posts/outlier/index.html#outlier-detection",
+    "href": "posts/outlier/index.html#outlier-detection",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Outlier Detection",
+    "text": "Outlier Detection\nNow we can detect outliers and add a flag for outliers to our dataset for easier mapping and identification of data:\n# Predict outliers\noutliers = model.predict(X_standardized)\n\n# Add outlier predictions to the original dataframe\nwine_data['outlier'] = outliers"
+  },
+  {
+    "objectID": "posts/outlier/index.html#visualizing-outleirs",
+    "href": "posts/outlier/index.html#visualizing-outleirs",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Visualizing Outleirs",
+    "text": "Visualizing Outleirs\nWe can map each feature against one another to visualize outliers using the following code:\nfor feature1 in red_wine_data.columns[:-2]:\n    for feature2 in red_wine_data.columns[:-2]:\n        if feature1 != feature2:\n            plt.figure(figsize=(10, 6))\n            sns.scatterplot(x=feature1, y=feature2, hue='outlier', data=red_wine_data, palette={-1: 'red', 1: 'blue'})\n            plt.title(f'Scatter Plot of {feature1} vs {feature2} (Red Wine)')\n            plt.show()\nNow we can see some examples of these scatter plots showing outliers:"
+  },
+  {
+    "objectID": "posts/linear/index.html",
+    "href": "posts/linear/index.html",
+    "title": "Linear and Non-Linear Regression",
+    "section": "",
+    "text": "Linear and Non-Linear Relationships"
+  },
+  {
+    "objectID": "posts/linear/index.html#introduction",
+    "href": "posts/linear/index.html#introduction",
+    "title": "Linear and Non-Linear Regression",
+    "section": "Introduction",
+    "text": "Introduction\nLinear and non-linear regression are both essential to machine learning. Linear and non-linear regression techniques allow us to create a mathematical model of a set of data and therefore make predictions on future data. Linear regression assumes a linear relationship between values, therefore we can create a line using linear regression to predict values not included in our dataset. The same idea applies to non-linear regression, except insted of a line it is another model."
+  },
+  {
+    "objectID": "posts/linear/index.html#linear-regression-dataset",
+    "href": "posts/linear/index.html#linear-regression-dataset",
+    "title": "Linear and Non-Linear Regression",
+    "section": "Linear Regression Dataset",
+    "text": "Linear Regression Dataset\nIn this section, we will use the “Linear Regression” dataset from Kaggle.com (https://www.kaggle.com/datasets/andonians/random-linear-regression). It is a set of randomly generated x and y values that follow a semi-linear pattern (i.e. as x increases, so does y proportionally). This will allow us to demonstrate linear regression techniques in a simple enviroment."
+  },
+  {
+    "objectID": "posts/linear/index.html#loading-and-preprocessing-the-data",
+    "href": "posts/linear/index.html#loading-and-preprocessing-the-data",
+    "title": "Linear and Non-Linear Regression",
+    "section": "Loading and Preprocessing the Data",
+    "text": "Loading and Preprocessing the Data\nWe load the dataset into a pandas dataframe and then extract the x and y variables. We then split the variables into different datasets for x and y, including train, test, and validation. This is done using the following code:\ntrain_data = pd.read_csv('train.csv')\ntest_data = pd.read_csv('test.csv')\n\nx_train, y_train = train_data['x'].values.reshape(-1, 1), train_data['y'].values\nx_test, y_test = test_data['x'].values.reshape(-1, 1), test_data['y'].values\n\nx_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=0.2, random_state=42)\n\ny_train = y_train.astype(float)\ny_val = y_val.astype(float)"
+  },
+  {
+    "objectID": "posts/linear/index.html#linear-regression",
+    "href": "posts/linear/index.html#linear-regression",
+    "title": "Linear and Non-Linear Regression",
+    "section": "Linear Regression",
+    "text": "Linear Regression\nFirst, we will demonstrate linear regression using sklearns built in LinearRegression() class. We can build our model and line using the following code.\nlinear_model = LinearRegression()\nlinear_model.fit(x_train, y_train)\\\nline = linear_model.predict(x_val)\nNow we can make and map predictions on our test dataset and compare them to our produce line and original data points with with:\ny_test_output = linear_model.predict(x_test)\nplt.scatter(x_train, y_train, label='Training Data', color='blue')\nplt.scatter(x_val, y_val, label='Validation Data', color='red')\nplt.scatter(x_test, y_test_output, label='Test Predictions',color='green', marker='x')\nplt.plot(x_val, line, label='Linear Model', color='black')\nplt.title('Linear Regression')\nplt.xlabel('x')\nplt.ylabel('y')\nplt.legend()\nplt.show()\nThen we can visualize our results:\n\n\n\nOutput"
+  },
+  {
+    "objectID": "posts/linear/index.html#linear-regression-demonstration",
+    "href": "posts/linear/index.html#linear-regression-demonstration",
+    "title": "Linear and Non-Linear Regression",
+    "section": "Linear Regression Demonstration",
+    "text": "Linear Regression Demonstration\nFirst, we will demonstrate linear regression using sklearns built in LinearRegression() class. We can build our model and line using the following code.\nlinear_model = LinearRegression()\nlinear_model.fit(x_train, y_train)\\\nline = linear_model.predict(x_val)\nNow we can make and map predictions on our test dataset and compare them to our produce line and original data points with with:\ny_test_output = linear_model.predict(x_test)\nplt.scatter(x_train, y_train, label='Training Data', color='blue')\nplt.scatter(x_val, y_val, label='Validation Data', color='red')\nplt.scatter(x_test, y_test_output, label='Test Predictions',color='green', marker='x')\nplt.plot(x_val, line, label='Linear Model', color='black')\nplt.title('Linear Regression')\nplt.xlabel('x')\nplt.ylabel('y')\nplt.legend()\nplt.show()\nThen we can visualize our results:\n\n\n\nOutput"
+  },
+  {
+    "objectID": "posts/linear/index.html#loading-and-preprocessing-linear-regression-dataset",
+    "href": "posts/linear/index.html#loading-and-preprocessing-linear-regression-dataset",
+    "title": "Linear and Non-Linear Regression",
+    "section": "Loading and Preprocessing Linear Regression Dataset",
+    "text": "Loading and Preprocessing Linear Regression Dataset\nWe load the dataset into a pandas dataframe and then extract the x and y variables. We then split the variables into different datasets for x and y, including train, test, and validation. This is done using the following code:\ntrain_data = pd.read_csv('train.csv')\ntest_data = pd.read_csv('test.csv')\n\nx_train, y_train = train_data['x'].values.reshape(-1, 1), train_data['y'].values\nx_test, y_test = test_data['x'].values.reshape(-1, 1), test_data['y'].values\n\nx_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=0.2, random_state=42)\n\ny_train = y_train.astype(float)\ny_val = y_val.astype(float)"
+  },
+  {
+    "objectID": "posts/linear/index.html#non-linear-regression-dataset",
+    "href": "posts/linear/index.html#non-linear-regression-dataset",
+    "title": "Linear and Non-Linear Regression",
+    "section": "Non-Linear Regression Dataset",
+    "text": "Non-Linear Regression Dataset\nA type of non-linear model is a parabolic model. In this blog, we will use the “Parabolic Dataset” dataset from Kaggle.com (https://www.kaggle.com/datasets/opamusora/parabolic-dataset). It is a set of randomly generated x and y values that follow a semi-parabolic pattern. This will allow us the demonstrate non-linear regression techniques in a simple enviroment."
+  },
+  {
+    "objectID": "posts/linear/index.html#loading-and-preprocessing-linear-regression-dataset-1",
+    "href": "posts/linear/index.html#loading-and-preprocessing-linear-regression-dataset-1",
+    "title": "Linear and Non-Linear Regression",
+    "section": "Loading and Preprocessing Linear Regression Dataset",
+    "text": "Loading and Preprocessing Linear Regression Dataset\nWe load the dataset into a pandas dataframe and then extract the x and y variables . We then split the variables into different datasets for x and y, including train and test datasets. This is done essentially the same way as before:\ndata = pd.read_csv(\"b_parabolic_data.csv\")\n\nx = data['x'].values.reshape(-1, 1)\ny = data['y'].values\nx_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=30)\nHowever, we now must do some fine-tuning in order for our model to fit our curve. First, we apply feature scaling to standardize the input data, ensuring that all features have the same scale. Next, we increase the degree of the polynomial features to capture more complex relationships in the data. The PolynomialFeatures transformer transforms the original features into polynomial features up to the specified degree, creating additional terms that represent interactions between the input features. This is done with the following code:\nscaler = StandardScaler()\nx_train_scaled = scaler.fit_transform(x_train)\nx_test_scaled = scaler.transform(x_test)\n\npoly_features = PolynomialFeatures(degree=3)\nx_train_poly = poly_features.fit_transform(x_train_scaled)\nx_test_poly = poly_features.transform(x_test_scaled)"
+  },
+  {
+    "objectID": "posts/linear/index.html#linear-regression-demonstration-1",
+    "href": "posts/linear/index.html#linear-regression-demonstration-1",
+    "title": "Linear and Non-Linear Regression",
+    "section": "Linear Regression Demonstration",
+    "text": "Linear Regression Demonstration\nNow we can build our model using Ridge Regression with regularization denoted by the alpha variable.\nmodel = Ridge(alpha=0.01)\nmodel.fit(x_train_poly, y_train)\nNow we can make predictions and visualize our code with:\ny_pred = model.predict(x_test_poly)\nplt.scatter(x, y, label='Actual Data')\nplt.scatter(x_test, y_pred, color='red', label='Predicted Data')\nplt.title('Polynomial Regression')\nplt.xlabel('x')\nplt.ylabel('y')\nplt.legend()\nplt.show()\nThis gives us the following image:\n\n\n\nOutput"
+  },
+  {
+    "objectID": "posts/clustering/index.html",
+    "href": "posts/clustering/index.html",
+    "title": "Clustering Penguin Features by Sex",
+    "section": "",
+    "text": "Penguins"
+  },
+  {
+    "objectID": "posts/clustering/index.html#introduction",
+    "href": "posts/clustering/index.html#introduction",
+    "title": "Clustering Penguin Features by Sex",
+    "section": "Introduction",
+    "text": "Introduction\nClustering is a machine learning technique that involves grouping similar data points together based on certain features or characteristics, aiming to identify inherent patterns and structures within a dataset. By grouping similar data points together, clustering algorithms help uncover natural divisions in the data, making it easier to understand and analyze complex relationships. Clustering plays a crucial role in tasks such as customer segmentation, anomaly detection, and image segmentation."
+  },
+  {
+    "objectID": "posts/clustering/index.html#dataset",
+    "href": "posts/clustering/index.html#dataset",
+    "title": "Clustering Penguin Features by Sex",
+    "section": "Dataset",
+    "text": "Dataset\nIn this section, we will use the “Clustering Penguins Species” dataset from Kaggle.com (https://www.kaggle.com/datasets/youssefaboelwafa/clustering-penguins-species). The dataset quantifies a number of penguin features such as culmen length (mm), culmen depth (mm), flipper length (mm), and body mass (g). The dataset also includes the sex of each penguin. For those unaware, a culmen is essentially what we would think of as the beak on a penguin."
+  },
+  {
+    "objectID": "posts/clustering/index.html#loading-and-preprocessing-linear-regression-dataset",
+    "href": "posts/clustering/index.html#loading-and-preprocessing-linear-regression-dataset",
+    "title": "Clustering Penguin Features by Sex",
+    "section": "Loading and Preprocessing Linear Regression Dataset",
+    "text": "Loading and Preprocessing Linear Regression Dataset\nWe load the dataset into a pandas dataframe and then scale the penguin features and create an easier mapping of male and female with the following code:\ndata.dropna(inplace=True)\ndata['sex'] = data['sex'].map({'MALE': 0, 'FEMALE': 1})\nscaler = StandardScaler()\nscaled_data = scaler.fit_transform(data.drop(['sex'], axis=1))"
+  },
+  {
+    "objectID": "posts/clustering/index.html#linear-regression-demonstration",
+    "href": "posts/clustering/index.html#linear-regression-demonstration",
+    "title": "Clustering Penguin Features by Sex",
+    "section": "Linear Regression Demonstration",
+    "text": "Linear Regression Demonstration\nFirst, we will demonstrate linear regression using sklearns built in LinearRegression() class. We can build our model and line using the following code.\nlinear_model = LinearRegression()\nlinear_model.fit(x_train, y_train)\\\nline = linear_model.predict(x_val)\nNow we can make and map predictions on our test dataset and compare them to our produce line and original data points with with:\ny_test_output = linear_model.predict(x_test)\nplt.scatter(x_train, y_train, label='Training Data', color='blue')\nplt.scatter(x_val, y_val, label='Validation Data', color='red')\nplt.scatter(x_test, y_test_output, label='Test Predictions',color='green', marker='x')\nplt.plot(x_val, line, label='Linear Model', color='black')\nplt.title('Linear Regression')\nplt.xlabel('x')\nplt.ylabel('y')\nplt.legend()\nplt.show()\nThen we can visualize our results:\n\n\n\nOutput"
+  },
+  {
+    "objectID": "posts/clustering/index.html#non-linear-regression-dataset",
+    "href": "posts/clustering/index.html#non-linear-regression-dataset",
+    "title": "Clustering Penguin Features by Sex",
+    "section": "Non-Linear Regression Dataset",
+    "text": "Non-Linear Regression Dataset\nA type of non-linear model is a parabolic model. In this blog, we will use the “Parabolic Dataset” dataset from Kaggle.com (https://www.kaggle.com/datasets/opamusora/parabolic-dataset). It is a set of randomly generated x and y values that follow a semi-parabolic pattern. This will allow us the demonstrate non-linear regression techniques in a simple enviroment."
+  },
+  {
+    "objectID": "posts/clustering/index.html#loading-and-preprocessing-linear-regression-dataset-1",
+    "href": "posts/clustering/index.html#loading-and-preprocessing-linear-regression-dataset-1",
+    "title": "Clustering Penguin Features by Sex",
+    "section": "Loading and Preprocessing Linear Regression Dataset",
+    "text": "Loading and Preprocessing Linear Regression Dataset\nWe load the dataset into a pandas dataframe and then extract the x and y variables . We then split the variables into different datasets for x and y, including train and test datasets. This is done essentially the same way as before:\ndata = pd.read_csv(\"b_parabolic_data.csv\")\n\nx = data['x'].values.reshape(-1, 1)\ny = data['y'].values\nx_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)\nHowever, we now must do some fine-tuning in order for our model to fit our curve. First, we apply feature scaling to standardize the input data, ensuring that all features have the same scale. Next, we increase the degree of the polynomial features to capture more complex relationships in the data. The PolynomialFeatures transformer transforms the original features into polynomial features up to the specified degree, creating additional terms that represent interactions between the input features. This is done with the following code:\nscaler = StandardScaler()\nx_train_scaled = scaler.fit_transform(x_train)\nx_test_scaled = scaler.transform(x_test)\n\npoly_features = PolynomialFeatures(degree=3)\nx_train_poly = poly_features.fit_transform(x_train_scaled)\nx_test_poly = poly_features.transform(x_test_scaled)"
+  },
+  {
+    "objectID": "posts/clustering/index.html#linear-regression-demonstration-1",
+    "href": "posts/clustering/index.html#linear-regression-demonstration-1",
+    "title": "Clustering Penguin Features by Sex",
+    "section": "Linear Regression Demonstration",
+    "text": "Linear Regression Demonstration\nNow we can build our model using Ridge Regression with regularization denoted by the alpha variable.\nmodel = Ridge(alpha=0.01)\nmodel.fit(x_train_poly, y_train)\nNow we can make predictions and visualize our code with:\ny_pred = model.predict(x_test_poly)\nplt.scatter(x, y, label='Actual Data')\nplt.scatter(x_test, y_pred, color='red', label='Predicted Data')\nplt.title('Polynomial Regression')\nplt.xlabel('x')\nplt.ylabel('y')\nplt.legend()\nplt.show()\nThis gives us the following image:\n\n\n\nOutput"
+  },
+  {
+    "objectID": "posts/clustering/index.html#k-means-clustering",
+    "href": "posts/clustering/index.html#k-means-clustering",
+    "title": "Clustering Penguin Features by Sex",
+    "section": "K-Means Clustering",
+    "text": "K-Means Clustering\nNow we can apply K-means clustering so we can see how these features cluster together\nk = 4\nkmeans = KMeans(n_clusters=k, init='k-means++', random_state=20)\ndata['cluster'] = kmeans.fit_predict(scaled_data)\nHere, k is the number of clusters that the algorithm will try to identify in the dataset. In this case, the algorithm is configured to find 4 clusters. Random State is essentially the seed of the algorithm and the init function is a method to speed up convergence of the algorithm."
+  },
+  {
+    "objectID": "posts/clustering/index.html#results",
+    "href": "posts/clustering/index.html#results",
+    "title": "Clustering Penguin Features by Sex",
+    "section": "Results",
+    "text": "Results\nWe can see the resulting clusters with the following code:\nfig, ax = plt.subplots()\n\nax.scatter(data[data['sex'] == 0]['culmen_length_mm'], data[data['sex'] == 0]['culmen_depth_mm'],\n           c=data[data['sex'] == 0]['cluster'], cmap='viridis', marker='o', label='MALE')\n\nax.scatter(data[data['sex'] == 1]['culmen_length_mm'], data[data['sex'] == 1]['culmen_depth_mm'],\n           c=data[data['sex'] == 1]['cluster'], cmap='viridis', marker='s', label='FEMALE')\n\n        \nax.set_title('K-Means Clustering of Penguins with Sex Comparison')\nax.set_xlabel('Culmen Length (mm)')\nax.set_ylabel('Culmen Depth (mm)')\nax.legend()\nplt.show()\nThis gives us:\n\n\n\nOutput\n\n\nThese results clearly distinguish penguin features by sex and seperate them into appropriate clusters by sex and difference in said features. The yellow cluster primarily consists of males, who appear to tend to have smaller culmen length and culment depth compared to the females in the green clusters nearby. We can assume that these penguins are perhaps comparable by species or age.\nWe can see that this remains true for a different species or age group as well. The light blue cluster again is primarily composed of males with smaller culmen depth and culmen length compared to the again nearby female counterparts. We again can perhaps deduce these penguins are near in size or age irrespective of sex.\nFinally we have one more cluster showing outiers of the same principle."
+  },
+  {
+    "objectID": "posts/probability/index.html#imports",
+    "href": "posts/probability/index.html#imports",
+    "title": "Probability and Random Variables: Simulating Dice Rolls",
+    "section": "Imports",
+    "text": "Imports\nFirst, we setup our necessary imports:\nimport numpy as np\nimport matplotlib.pyplot as plt"
+  },
+  {
+    "objectID": "posts/linear/index.html#imports",
+    "href": "posts/linear/index.html#imports",
+    "title": "Linear and Non-Linear Regression",
+    "section": "Imports",
+    "text": "Imports\nFirst, we set up our necessary imports:\nimport pandas as pd\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.linear_model import LinearRegression, Ridge, Lasso\nfrom sklearn.preprocessing import PolynomialFeatures\nimport matplotlib.pyplot as plt"
+  },
+  {
+    "objectID": "posts/classification/index.html#imports",
+    "href": "posts/classification/index.html#imports",
+    "title": "Classification: Classifying Satellite Images",
+    "section": "Imports",
+    "text": "Imports\nFirst, we set up our necessary imports:\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom tensorflow import keras\nfrom tensorflow.keras import layers\nfrom tensorflow.keras.preprocessing import image_dataset_from_directory"
+  },
+  {
+    "objectID": "posts/clustering/index.html#imports",
+    "href": "posts/clustering/index.html#imports",
+    "title": "Clustering Penguin Features by Sex",
+    "section": "Imports",
+    "text": "Imports\nFirst, we set up our necessary imports:\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom sklearn.cluster import KMeans\nfrom sklearn.preprocessing import StandardScaler"
+  },
+  {
+    "objectID": "posts/outlier/index.html#imports",
+    "href": "posts/outlier/index.html#imports",
+    "title": "Outlier Detection: Finding Outlier Wines",
+    "section": "Imports",
+    "text": "Imports\nFirst, we set up our necessary imports:\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nfrom sklearn.ensemble import IsolationForest\nfrom sklearn.preprocessing import StandardScaler"
+  },
+  {
+    "objectID": "posts/linear/index.html#conclusion",
+    "href": "posts/linear/index.html#conclusion",
+    "title": "Linear and Non-Linear Regression",
+    "section": "Conclusion",
+    "text": "Conclusion\nIn conclusion, we demonstrated linear and non-linear regression techniques which can be used to create mathematical models. This can now be applied on real-world data to make accurate predictions."
+  }
+]

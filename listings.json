@@ -1,0 +1,13 @@
+[
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/classification/index.html",
+      "/posts/clustering/index.html",
+      "/posts/linear/index.html",
+      "/posts/outlier/index.html",
+      "/posts/probability/index.html",
+      "/posts/welcome/index.html"
+    ]
+  }
+]
